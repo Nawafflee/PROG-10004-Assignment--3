@@ -80,12 +80,12 @@ class SavingsAccount(Account):
             super().withdraw(amount)
             print("Withdrawal of ${} CAD from Savings Account has been successful!".format(amount))
 
-
+"""
 #Test Cases to make sure that the account class along with its variables and methods are working properly
 s1 = SavingsAccount("SAV001","Hishmat Fardouz",0,7000,5000)
 print(s1.withdraw(4000))
 print(s1.getCurrentBalance())
-
+"""
 class ChequingAccount(Account):
     def __init__(self,accountNumber,accountHolderName, rateOfInterest, currentBalance ,overdraftLimit):
         super().__init__(accountNumber,accountHolderName,rateOfInterest,currentBalance)
@@ -101,11 +101,60 @@ class ChequingAccount(Account):
             super().withdraw(amount)
             print("Withdrawal of ${} CAD from Chequing Account has been successful!".format(amount))
 
-    
+"""
 #Test Cases to make sure that the account class along with its variables and methods are working properly
-c1 = ChequingAccount("CHQ500","Ali Faris",0,7000,5000)
+c1 = ChequingAccount("CHQ500","Ali Faris",0.0,7000.0,5000.0)
 print(c1.withdraw(2000000))
 print(c1.getCurrentBalance())
+"""
+
+
+class Bank:
+    
+    def __init__(self,bankName):
+        self.__bankName = bankName
+        
+        self.accountList = [
+            ChequingAccount("CHQ001","Mike",0.0,1000.0,5000.0),
+            ChequingAccount("CHQ002","Sam",0.0,2000.0,3000.0),
+            ChequingAccount("CHQ003","Marcel",0.0,3000.0,2000.0),
+            SavingsAccount("SAV001","Ali",5.0,5000.0,1000.0),
+            SavingsAccount("SAV002","Hishmat",5.0,6000.0,1500.0),
+            SavingsAccount("SAV003","Sara",5.0,7000.0,2000.0),
+        ]
+        
+    def searchAccount(self,account_number):
+        for account in self.accountList:
+            if account._Account__accountNumber == account_number:
+                #return "Account {} found".format(account)
+                return account
+        #return "Cannot find account {}".format(account_number)
+        return None
+    
+    
+    def openAccount(self,account_type,account_number,account_holder_name,rate_of_interest,current_balance,account_feature):
+        if account_type == "Savings" or account_type == "savings" or account_type == "SAVINGS":
+            establish_account = SavingsAccount(account_number,account_holder_name,rate_of_interest,current_balance,account_feature)
+            self.accountList.append(establish_account)
+            return "Account Type {} | Account Number {} | Holder Name '{}' | Rate of Interest {}% | Balance ${} CAD was successfully created".format(account_type,account_number,account_holder_name,rate_of_interest,current_balance)
+            #return "{} Account Type | Account Number {} | Minimum Balance {}".format(account_type,account_number,account_feature) 
+        elif account_type == "Chequing" or account_type == "chequing" or account_type == "CHEQUING":
+            establish_account = ChequingAccount(account_number,account_holder_name,rate_of_interest,current_balance,account_feature)
+            self.accountList.append(establish_account)
+            #return "{} Account Type | Account Number {} | Overdraft Limit {}".format(account_type,account_number,account_feature) 
+            return "Account Type {} | Account Number {} | Holder Name '{}' | Rate of Interest {}% | Balance ${} CAD was successfully created".format(account_type,account_number,account_holder_name,rate_of_interest,current_balance)
+        else:
+            return "Account Type is Invalid : Must be 'Chequing' 'chequing' 'CHEQUING' or 'Savings' or 'savings' or 'SAVINGS' Account"
+      
+
+#Code so far can only work when interest is added onto Chequing Account which is true in the real world as there are Chequing accounts
+#offering an annual interest rate
+bank1 = Bank("Test Bank")
+print(bank1.searchAccount("CHQ001"))
+print(bank1.openAccount("hi","SAV101","Ali",5.0,5000.0,3000.0))
+print(bank1.searchAccount("SAV101"))
+print(bank1.openAccount("Savings","SAV1301","Ali",5.0,5000.0,3000.0))
+print(bank1.searchAccount("SAV1301"))
 
 
 
