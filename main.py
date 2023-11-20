@@ -8,45 +8,44 @@ class Account:
     
     #Constructor to initialize Account and declare its properties
 
-    #Must make attributes private
     def __init__(self,accountNumber,accountHolderName,rateOfInterest,currentBalance):
-        self._accountNumber = accountNumber
-        self._accountHolderName = accountHolderName
-        self._rateOfInterest = rateOfInterest
-        self._currentBalance = currentBalance
+        self.__accountNumber = accountNumber
+        self.__accountHolderName = accountHolderName
+        self.__rateOfInterest = rateOfInterest
+        self.__currentBalance = currentBalance
 
     #getAccountNumber method for Account class
     def getAccountNumber(self):
-        return self._accountNumber
+        return self.__accountNumber
 
     #getAccountHolderName method for Account class
     def getAccountHolderName(self):
-        return self._accountHolderName
+        return self.__accountHolderName
     
     #getRateOfInterest method for Account class
     def getRateOfInterest(self):
-        return self._rateOfInterest
+        return self.__rateOfInterest
     
     #getCurrentBalance method for Account class
     def getCurrentBalance(self):
-        return self._currentBalance 
+        return self.__currentBalance 
     
     #setAccountHolderName method for Account class
     def setAccountHolderName(self,name):
-        self._accountHolderName = name
+        self.__accountHolderName = name
 
     #setRateOfInterest method for Account class
     def setRateOfInterest(self,rate):
-        self._rateOfInterest = rate
+        self.__rateOfInterest = rate
 
     #deposit method for Account class
     def deposit(self,amount):
-        self._currentBalance += amount
+        self.__currentBalance += amount
         return "${} CAD has been successfully deposited".format(amount)
      
     #withdraw method for Account class 
     def withdraw(self,amount):
-        self._currentBalance -= amount
+        self.__currentBalance -= amount
         return "${} CAD has been successfully withdrawn".format(amount)
 
 #Test Cases to make sure that the account class along with its variables and methods are working properly
