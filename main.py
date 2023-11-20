@@ -48,6 +48,7 @@ class Account:
         self.__currentBalance -= amount
         return "${} CAD has been successfully withdrawn".format(amount)
 
+"""
 #Test Cases to make sure that the account class along with its variables and methods are working properly
 account1 = Account("CHQ200","Mike Hern",0.0,5000.0)
 print(account1.deposit(3000.0))
@@ -58,6 +59,32 @@ print(account1.setAccountHolderName("fsd"))
 print(account1.withdraw(50000.0))
 print(account1.getCurrentBalance())   
 print(account1.getAccountHolderName())
+"""
+
+
+class SavingsAccount(Account):
+    
+    #Initializer to initialize Saving account with parameters which some inherit from Account Class
+    def __init__(self,accountNumber,accountHolderName,rateOfInterest,currentBalance,minimumBalance):
+        self.__minimumBalance = minimumBalance
+        super().__init__(accountNumber,accountHolderName,rateOfInterest,currentBalance)
+
+    #Withdrawal method that adds the minimum balance requirement to a new withdraw method on the SavingsAccount Class
+    def withdraw(self,amount):
+        if self._Account__currentBalance - amount < self.__minimumBalance:
+            print("Withdrawal of ${} CAD from Savings Account has been rejected : BELOW MINIMUM BALANCE".format(amount))
+            #print("Withdrawal rejected: Below minimum balance.")
+
+        #calls Account Class withdrawal method using super function
+        else:
+            super().withdraw(amount)
+            print("Withdrawal of ${} CAD from Savings Account has been successful".format(amount))
+
+
+#Test Cases to make sure that the account class along with its variables and methods are working properly
+s1 = SavingsAccount("SAV001","Hishmat Fardouz",0,7000,5000)
+print(s1.withdraw(4000))
+print(s1.getCurrentBalance())
 
 
 
