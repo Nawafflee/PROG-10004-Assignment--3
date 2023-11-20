@@ -103,7 +103,7 @@ class ChequingAccount(Account):
 
     
 #Test Cases to make sure that the account class along with its variables and methods are working properly
-c1 = ChequingAccount("CHQ500","Ali Faris",7000,5000)
+c1 = ChequingAccount("CHQ500","Ali Faris",0,7000,5000)
 print(c1.withdraw(2000000))
 print(c1.getCurrentBalance())
 
