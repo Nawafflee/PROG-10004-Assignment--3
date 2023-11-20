@@ -41,12 +41,12 @@ class Account:
     #deposit method for Account class
     def deposit(self,amount):
         self.__currentBalance += amount
-        return "${} CAD has been successfully deposited".format(amount)
+        return "${} CAD has been successfully deposited!".format(amount)
      
     #withdraw method for Account class 
     def withdraw(self,amount):
         self.__currentBalance -= amount
-        return "${} CAD has been successfully withdrawn".format(amount)
+        return "${} CAD has been successfully withdrawn!".format(amount)
 
 """
 #Test Cases to make sure that the account class along with its variables and methods are working properly
@@ -71,20 +71,41 @@ class SavingsAccount(Account):
 
     #Withdrawal method that adds the minimum balance requirement to a new withdraw method on the SavingsAccount Class
     def withdraw(self,amount):
+        #self._Account__currentBalance is used this way to call from the Account Class since the currentBalance property is a private attribute with 2 underscores
         if self._Account__currentBalance - amount < self.__minimumBalance:
-            print("Withdrawal of ${} CAD from Savings Account has been rejected : BELOW MINIMUM BALANCE".format(amount))
-            #print("Withdrawal rejected: Below minimum balance.")
+            print("Withdrawal of ${} CAD from Savings Account has been rejected : BELOW MINIMUM BALANCE!".format(amount))
 
         #calls Account Class withdrawal method using super function
         else:
             super().withdraw(amount)
-            print("Withdrawal of ${} CAD from Savings Account has been successful".format(amount))
+            print("Withdrawal of ${} CAD from Savings Account has been successful!".format(amount))
 
 
 #Test Cases to make sure that the account class along with its variables and methods are working properly
 s1 = SavingsAccount("SAV001","Hishmat Fardouz",0,7000,5000)
 print(s1.withdraw(4000))
 print(s1.getCurrentBalance())
+
+class ChequingAccount(Account):
+    def __init__(self,accountNumber,accountHolderName, rateOfInterest, currentBalance ,overdraftLimit):
+        super().__init__(accountNumber,accountHolderName,rateOfInterest,currentBalance)
+        self.__overdraftLimit = overdraftLimit
+
+    #Withdrawal method that adds the overdraft limit requirement to a new withdraw method on the ChequingAccount Class
+    def withdraw(self, amount):
+        if self._Account__currentBalance + self.__overdraftLimit < amount:
+            print("Withdrawal of ${} CAD from Chequing Account has been rejected : ABOVE OVERDRAFT LIMIT!".format(amount))
+
+            #calls Account Class withdrawal method using super function
+        else:
+            super().withdraw(amount)
+            print("Withdrawal of ${} CAD from Chequing Account has been successful!".format(amount))
+
+    
+#Test Cases to make sure that the account class along with its variables and methods are working properly
+c1 = ChequingAccount("CHQ500","Ali Faris",7000,5000)
+print(c1.withdraw(2000000))
+print(c1.getCurrentBalance())
 
 
 
