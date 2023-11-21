@@ -146,7 +146,7 @@ class Bank:
         else:
             return "Account Type is Invalid : Must be 'Chequing' 'chequing' 'CHEQUING' or 'Savings' or 'savings' or 'SAVINGS' Account"
       
-
+"""
 #Code so far can only work when interest is added onto Chequing Account which is true in the real world as there are Chequing accounts
 #offering an annual interest rate
 bank1 = Bank("Test Bank")
@@ -155,17 +155,18 @@ print(bank1.openAccount("hi","SAV101","Ali",5.0,5000.0,3000.0))
 print(bank1.searchAccount("SAV101"))
 print(bank1.openAccount("Savings","SAV1301","Ali",5.0,5000.0,3000.0))
 print(bank1.searchAccount("SAV1301"))
-
-
-
-#TODO: Application class needs to be worked on at end after all the other classes are created
 """
+
 class Application:
+
+    def __init__(self,bank):
+        self.bank = bank
+        self.currentAccount = None
 
     def showMainMenu(self):
         print("Welcome to the Bank")
         while True:
-            print("\tMain Menu, Please Select the Following Options:")
+            print("\nMain Menu, Please Select the Following Options:")
             print("1. Search Account")
             print("2. Open Account (Bonus Question)")
             print("3. Exit")
@@ -173,9 +174,9 @@ class Application:
                 choice_selection = int(input("Enter your choice: "))
 
                 if choice_selection == 1:
-                    print("Selected Choice 1") 
+                    self.search_account() 
                 elif choice_selection == 2:
-                    print("Selected Choice 2") 
+                    self.open_account()
                 elif choice_selection == 3:
                     print("Exiting the Application...")
                     quit()
@@ -195,19 +196,110 @@ class Application:
                 choice_selection = int(input("Enter your choice: "))
 
                 if choice_selection == 1:
-                    print("Selected Choice 1") 
+                    self.checkBalance()
                 elif choice_selection == 2:
-                    print("Selected Choice 2") 
+                    self.deposit()
                 elif choice_selection == 3:
-                    print("Selected Choice 3") 
+                    self.withdraw()
                 elif choice_selection == 4:
                     print("Exiting the Accounts Menu...")
                     break
             except ValueError as err:
                 print(err)
 
+    def search_account(self):
+        account_number = str(input("Enter account number: "))
+        account = self.bank.searchAccount(account_number)
 
-App1 = Application()
-App1.showAccountMenu()
-App1.showMainMenu()
-"""
+        #search account success
+        if account:
+            print("{} Account has been selected".format(account_number))
+            self.currentAccount = account
+            self.showAccountMenu()
+        #account can not be found
+        else:
+            print("{} Account can not be found".format(account_number))
+
+
+    def open_account(self):
+        print("Account Opening Procedure: ")
+    
+        account_type = str(input("Enter Account Type (Savings or Chequing): "))
+        print("You have selected {} as the Account Type".format(account_type))
+
+        account_number = str(input("Enter Account Number: "))
+        print("You have selected '{}' as the Account Number".format(account_number))
+
+        account_holder_name = str(input("Enter Account Holder name: "))
+        print("You have selected '{}' as the Account Holder's name".format(account_holder_name))
+
+        rate_of_interest = float(input("Enter Rate of Interest: "))
+        print("You have selected '{} %' as the Rate of Interest".format(rate_of_interest))
+
+        current_balance = float(input("Enter Current Balance: "))
+        print("You have deposited ${} CAD into the Account's Balance".format(current_balance))
+        
+        
+        if account_type == "Savings" or account_type == "savings" or account_type == "SAVINGS":
+            minimum_balance = float(input("Enter Minimum Balance for Savings account: "))
+            print("You have set up the Saving Account's Minimum Balance as ${} CAD".format(minimum_balance))
+            self.bank.openAccount(account_type,account_number,account_holder_name,rate_of_interest,current_balance,account_feature = minimum_balance)
+            print("Account Type {} | Account Number {} | Holder Name '{}' | Rate of Interest {}% | Balance ${} CAD was successfully created".format(account_type,account_number,account_holder_name,rate_of_interest,current_balance))
+        elif account_type == "Chequing" or account_type == "chequing" or "CHEQUING":
+            overdraft_limit = float(input("Enter Overdraft Limit for Chequing Account: "))
+            print("You have set up the Chequing Account's Overdraft Limit as ${} CAD".format(overdraft_limit))
+            self.bank.openAccount(account_type,account_number,account_holder_name,rate_of_interest,current_balance,account_feature = overdraft_limit)
+            print("Account Type {} | Account Number {} | Holder Name '{}' | Rate of Interest {}% | Balance ${} CAD was successfully created".format(account_type,account_number,account_holder_name,rate_of_interest,current_balance))
+        else:
+            print("Account Type is Invalid : Must be 'Chequing' 'chequing' or 'Savings' or 'savings Account.")
+        
+        print("\n Going Back to the Main Menu...")
+
+
+    def checkBalance(self):
+        #check for current balance using getCurrentBalance method
+        if self.currentAccount:
+            print("Balance ${} CAD".format(self.currentAccount.getCurrentBalance()))
+
+            #good coding practice
+        else:
+            print("No account selected.")
+    
+    def deposit(self):
+        if self.currentAccount:
+            try:
+                #amount less than zero condition 
+                amount = float(input("Enter amount to deposit: "))
+                if amount < 0:
+                    print("Invalid amount. Please enter a positive value.")
+                else:
+                    self.currentAccount.deposit(amount)
+                    print("Deposit of ${} CAD has been successful.".format(amount))
+            except ValueError:
+                print("Invalid input. Please enter a valid number.")
+        #good coding practice
+        else:
+            print("No account has been selected.")
+
+    def withdraw(self):
+        if self.currentAccount:
+            try:
+                #amount less than zero condition 
+                amount = float(input("Enter amount to withdraw: "))
+                if amount < 0:
+                    print("Invalid amount. Please enter a positive value.")
+                else:
+                    self.currentAccount.withdraw(amount)
+                    #print("Withdrawal of ${} CAD has been successful.".format(amount))
+            except ValueError:
+                print("Invalid input. Please enter a valid number.")
+        else:
+            print("No account has been selected.")
+
+    def run(self):
+        self.showMainMenu()
+
+# Main
+bank = Bank("Nawaf")
+app = Application(bank)
+app.run()
